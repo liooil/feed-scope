@@ -1,4 +1,4 @@
-# AGENTS.md
+# CLAUDE.md
 
 ## Project Overview
 
@@ -565,11 +565,11 @@ fixtures/gitlab/pipelines.xml
 Use these as placeholders and update when the project scripts are finalized.
 
 ```bash
-npm install
-npm run dev
-npm run tauri dev
-npm run build
-npm run tauri build
+bun install
+bun run dev
+bun run tauri dev
+bun run build
+bun run tauri build
 ```
 
 For Rust checks:
