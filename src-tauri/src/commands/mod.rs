@@ -67,11 +67,20 @@ pub fn get_items(
 }
 
 #[derive(serde::Deserialize, Default)]
+#[serde(rename_all = "camelCase")]
 pub struct GetItemsOpts {
+    #[serde(default)]
     pub unread_only: bool,
+    #[serde(default)]
     pub starred_only: bool,
+    #[serde(default = "default_limit")]
     pub limit: i32,
+    #[serde(default)]
     pub offset: i32,
+}
+
+fn default_limit() -> i32 {
+    100
 }
 
 #[tauri::command]

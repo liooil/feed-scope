@@ -6,6 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -101,6 +102,9 @@ export function FeedDialog({ open, onOpenChange, feed, onSaved }: FeedDialogProp
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{feed ? "Edit Feed" : "Add Feed"}</DialogTitle>
+          <DialogDescription>
+            {feed ? "Update the feed settings below." : "Enter the details for your new feed."}
+          </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-2">
           <div className="grid gap-2">
