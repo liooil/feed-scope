@@ -1,7 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { RefreshCw, Filter } from "lucide-react";
+import { RefreshCw, Filter, AlertCircle } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import type { Feed } from "@/lib/types";
 
 interface TopBarProps {
@@ -27,9 +33,19 @@ export function TopBar({
         {selectedFeed ? selectedFeed.name : "All Feeds"}
       </h2>
       {selectedFeed?.last_error && (
-        <Badge variant="destructive" className="text-[10px]">
-          Error
-        </Badge>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Badge variant="destructive" className="text-[10px] gap-1 cursor-default">
+                <AlertCircle className="h-3 w-3" />
+                Error
+              </Badge>
+            </TooltipTrigger>
+            <TooltipContent side="bottom" className="max-w-[360px] text-xs">
+              {selectedFeed.last_error}
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       )}
       <div className="flex-1" />
       <div className="flex items-center gap-1">

@@ -1,12 +1,19 @@
 import { useState } from "react";
-import { Plus, Rss, Settings, Trash2, RefreshCw } from "lucide-react";
+import { Plus, Rss, Settings, Trash2, RefreshCw, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { FeedDialog } from "@/components/feed/FeedDialog";
+import { SettingsDialog } from "@/features/settings/SettingsDialog";
 import { deleteFeed, syncFeed } from "@/lib/api";
 import type { Feed } from "@/lib/types";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,6 +42,7 @@ export function Sidebar({ feeds, selectedFeedId, onSelectFeed, onFeedsChanged }:
   const [editingFeed, setEditingFeed] = useState<Feed | null>(null);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const [syncingId, setSyncingId] = useState<string | null>(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   const handleDelete = async (id: string) => {
     try {
@@ -119,7 +127,18 @@ export function Sidebar({ feeds, selectedFeedId, onSelectFeed, onFeedsChanged }:
                             <div className="h-2 w-2 rounded-full bg-muted-foreground/40" />
                           )}
                           {feed.last_error && (
-                            <div className="h-2 w-2 rounded-full bg-destructive" />
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <span className="inline-flex shrink-0">
+                                    <AlertCircle className="h-3.5 w-3.5 text-destructive" />
+                                  </span>
+                                </TooltipTrigger>
+                                <TooltipContent side="right" className="max-w-[240px] text-xs">
+                                  {feed.last_error}
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
                           )}
                         </div>
                       </button>
@@ -165,14 +184,14 @@ export function Sidebar({ feeds, selectedFeedId, onSelectFeed, onFeedsChanged }:
       <div className="p-2">
         <button
           className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm text-sidebar-foreground hover:bg-sidebar-accent"
-          onClick={() => {
-            // Settings navigation - simplified for now
-          }}
+          onClick={() => setSettingsOpen(true)}
         >
           <Settings className="h-4 w-4" />
           Settings
         </button>
       </div>
+
+      <SettingsDialog open={settingsOpen} onOpenChange={setSettingsOpen} />
 
       <FeedDialog
         open={feedDialogOpen}
